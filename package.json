@@ -1,0 +1,24 @@
+{
+  "name": "cryptochecker",
+  "version": "1.0.0",
+  "description": "Crypto Checker Discord bot",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benmotyka/crypto-checker.git"
+  },
+  "author": "benmotyka",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benmotyka/crypto-checker/issues"
+  },
+  "homepage": "https://github.com/benmotyka/crypto-checker#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "dotenv": "^15.0.0"
+  }
+}
