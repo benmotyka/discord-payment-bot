@@ -1,7 +1,6 @@
 import DiscordJS, { Intents, ClientOptions } from 'discord.js'
 import dotenv from 'dotenv'
-import checkVoucher from "./commands/checkVoucher"
-import redeemVoucher from './commands/redeemVoucher'
+import walletBalance from "./commands/walletBalance"
 dotenv.config()
 
 const options: ClientOptions = {
@@ -20,24 +19,10 @@ client.on('ready', () => {
     const guild = client.guilds.cache.get(testGuildId)
     const commands = guild ? guild.commands : client.application?.commands
 
-    checkVoucher({
+    walletBalance({
         commands,
         client
     });
-    redeemVoucher({
-        commands,
-        client
-    })
 })
-
-// client.on('messageCreate', (message) => {
-//     if (message.content === 'ping') {
-//         message.react('🤣')
-//         message.reply({
-//             content: 'pong'
-//         })
-//     }
-// })
-
 
 client.login(process.env.TOKEN)
