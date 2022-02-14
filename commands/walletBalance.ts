@@ -1,4 +1,4 @@
-import DiscordJS, { Intents, ClientOptions } from "discord.js";
+import DiscordJS from "discord.js";
 import getCryptoByWallet from "../util/getCryptoByWallet";
 
 import { getBalance } from "../api/blockcypher";

@@ -1,6 +1,7 @@
 import DiscordJS, { Intents, ClientOptions } from 'discord.js'
 import dotenv from 'dotenv'
 import walletBalance from "./commands/walletBalance"
+import transactionHashInfo from "./commands/transactionHashInfo"
 dotenv.config()
 
 const options: ClientOptions = {
@@ -23,6 +24,11 @@ client.on('ready', () => {
         commands,
         client
     });
+
+    transactionHashInfo({
+        commands,
+        client 
+    })
 })
 
 client.login(process.env.TOKEN)
