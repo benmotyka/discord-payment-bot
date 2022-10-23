@@ -1,5 +1,5 @@
 import DiscordJS from "discord.js";
-import getCryptoByWallet from "../util/getCryptoByWallet";
+import getCryptoByWallet from "../../util/getCryptoByWallet";
 
 import { getBalance } from "../api/blockcypher";
 export default ({
