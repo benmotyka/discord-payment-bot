@@ -19,6 +19,7 @@
   "homepage": "https://github.com/benmotyka/crypto-checker#readme",
   "dependencies": {
     "axios": "^0.26.0",
+    "chalk": "^5.1.2",
     "discord.js": "^14.6.0",
     "dotenv": "^15.0.0"
   }

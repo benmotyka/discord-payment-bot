@@ -1,30 +1,29 @@
-import { Collection } from "discord.js";
-import { Client, Events, GatewayIntentBits } from "discord.js";
+import {
+  Client,
+  GatewayIntentBits,
+  Collection,
+  PermissionFlagsBits,
+} from "discord.js";
+import { Command, SlashCommand } from "./types";
 import dotenv from "dotenv";
-import fs from "fs";
-import path from "path";
-
+import { readdirSync } from "fs";
+import { join } from "path";
 dotenv.config();
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-client.commands = new Collection();
+const { Guilds, MessageContent, GuildMessages, GuildMembers } =
+  GatewayIntentBits;
+const client = new Client({
+  intents: [Guilds, MessageContent, GuildMessages, GuildMembers],
+});
 
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts'));
+client.slashCommands = new Collection<string, SlashCommand>();
+client.commands = new Collection<string, Command>();
+client.cooldowns = new Collection<string, number>();
 
-for (const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-	// Set a new item in the Collection with the key as the command name and the value as the exported module
-	if ('data' in command && 'execute' in command) {
-		client.commands.set(command.data.name, command);
-	} else {
-		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-	}
-}
+const handlersDir = join(__dirname, "./handlers");
 
-client.once(Events.ClientReady, (c) => {
-  console.log(`Ready! Logged in as ${c.user.tag}`);
+readdirSync(handlersDir).forEach((handler) => {
+  require(`${handlersDir}/${handler}`)(client);
 });
 
 client.login(process.env.TOKEN);
