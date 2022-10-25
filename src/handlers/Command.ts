@@ -5,7 +5,7 @@ import { join } from "path";
 import { color } from "../functions";
 import { Command, SlashCommand } from "../types";
 
-module.exports = (client : Client) => {
+export default (client : Client) => {
     const slashCommands : SlashCommandBuilder[] = []
     const commands : Command[] = []
 
