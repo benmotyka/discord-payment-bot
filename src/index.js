@@ -5,7 +5,11 @@ const { config } = require("dotenv");
 config();
 
 const client = new Discord.Client({
-  intents: [Discord.GatewayIntentBits.Guilds],
+  intents: [
+    Discord.GatewayIntentBits.Guilds,
+    Discord.GatewayIntentBits.GuildMessages,
+    Discord.GatewayIntentBits.GuildMessageReactions,
+  ],
 });
 
 client.commands = new Discord.Collection();
