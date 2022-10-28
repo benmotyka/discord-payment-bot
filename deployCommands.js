@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { config } = require("dotenv");
-config()
+config();
 
 const clientId = "937772843876368424";
 
@@ -13,9 +13,6 @@ const commands = [
   new SlashCommandBuilder()
     .setName("initialize")
     .setDescription("Initializes bot"),
-    new SlashCommandBuilder()
-    .setName("createchannel")
-    .setDescription("Creates channel"),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: "9" }).setToken(process.env.TOKEN);
