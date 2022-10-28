@@ -26,8 +26,7 @@ module.exports = {
     );
 
     // Reply to command, can also use
-    // interaction.channel.send
-    interaction.reply({
+    interaction.channel.send({
       embeds: [embedMessage],
       components: [buttons],
     });
