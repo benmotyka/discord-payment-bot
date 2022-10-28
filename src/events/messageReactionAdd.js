@@ -3,10 +3,9 @@ const Discord = require("discord.js");
 module.exports = {
   name: "messageReactionAdd",
   once: false,
-  run(interaction, client) {
-    if (!interaction.me || client.bot) return; // return if reaction was done by discord bot or to message not sent by discord bot
-    console.log(interaction);
-    console.log(client);
+  run(interaction, client, guild) {
+    // return if reaction was done by discord bot or to message not sent by discord bot
+    if (!interaction.me || client.bot) return;
   },
 };
 
