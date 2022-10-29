@@ -9,7 +9,15 @@ module.exports = {
         // Create unique channel name
         const channelName =
           interaction.user.username + interaction.user.discriminator;
-        // TODO: check if channel exists, if it does, send ephemeral message
+
+        // Check if channel already exists  
+        const existingChannelNames = interaction.guild.channels.cache.map(channel => channel.name)
+        if (existingChannelNames.includes(channelName)) {
+          return await interaction.reply({
+            content: `Channel already exists, please proceed to it (${channelName})`,
+            ephemeral: true,
+          });
+        }
 
         // Create channel and invite user to it
         interaction.guild.channels.create({
