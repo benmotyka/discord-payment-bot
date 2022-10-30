@@ -1,4 +1,10 @@
 const Discord = require("discord.js");
+const {
+  EmbedBuilder,
+  ButtonBuilder,
+  ActionRowBuilder,
+  ButtonStyle,
+} = require("discord.js");
 
 module.exports = {
   name: "interactionCreate", // Event name
@@ -7,11 +13,12 @@ module.exports = {
     if (interaction.isButton()) {
       if (interaction.customId === "payNow") {
         // Create unique channel name
-        const channelName =
-          interaction.user.username + interaction.user.discriminator;
+        const channelName = `${interaction.user.username}#${interaction.user.discriminator}`;
 
-        // Check if channel already exists  
-        const existingChannel = interaction.guild.channels.cache.find(channel => channel.name === channelName)
+        // Check if channel already exists
+        const existingChannel = interaction.guild.channels.cache.find(
+          (channel) => channel.name === channelName
+        );
         if (existingChannel) {
           return await interaction.reply({
             content: `Channel already exists, please proceed to it (${existingChannel.toString()})`,
@@ -19,8 +26,8 @@ module.exports = {
           });
         }
 
-        // Create private channel 
-        const channel = await interaction.guild.channels.create({ 
+        // Create private channel
+        const channel = await interaction.guild.channels.create({
           name: channelName,
           type: Discord.ChannelType.GuildText,
           permissionOverwrites: [
@@ -32,7 +39,39 @@ module.exports = {
               id: interaction.user.id,
               allow: [Discord.PermissionsBitField.Flags.ViewChannel],
             },
-          ]
+          ],
+        });
+
+        // Create styled message
+        const embedMessage = new EmbedBuilder()
+          .setColor(0x0099ff)
+          .setTitle("Payment instructions")
+          .setDescription(
+            "Please pay:\n\n0.01 BTC \n\nto wallet below: \n\n1EMQmtF2YWLG47PEbbrpHAtesJC1GjPf8s\n\nPress ✅ button once you do this\n"
+          )
+          .setFooter({
+            text: "You can cancel this payment anytime by pressing ❌",
+          });
+
+        // Create buttons under message
+        const buttons = new ActionRowBuilder()
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("donePayment")
+              .setLabel("✅ Done")
+              .setStyle(ButtonStyle.Secondary)
+          )
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId("cancelPayment")
+              .setLabel("❌ Cancel")
+              .setStyle(ButtonStyle.Secondary)
+          );
+
+        await channel.send({
+          content: `Welcome ${interaction.user}`,
+          embeds: [embedMessage],
+          components: [buttons],
         });
 
         // Reply to user

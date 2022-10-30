@@ -21,11 +21,10 @@ module.exports = {
     const buttons = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId("payNow")
-        .setLabel("Pay now 💸")
+        .setLabel("💸 Pay now")
         .setStyle(ButtonStyle.Secondary)
     );
 
-    // Reply to command, can also use
     interaction.channel.send({
       embeds: [embedMessage],
       components: [buttons],
