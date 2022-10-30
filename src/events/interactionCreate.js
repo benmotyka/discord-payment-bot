@@ -11,23 +11,33 @@ module.exports = {
           interaction.user.username + interaction.user.discriminator;
 
         // Check if channel already exists  
-        const existingChannelNames = interaction.guild.channels.cache.map(channel => channel.name)
-        if (existingChannelNames.includes(channelName)) {
+        const existingChannel = interaction.guild.channels.cache.find(channel => channel.name === channelName)
+        if (existingChannel) {
           return await interaction.reply({
-            content: `Channel already exists, please proceed to it (${channelName})`,
+            content: `Channel already exists, please proceed to it (${existingChannel.toString()})`,
             ephemeral: true,
           });
         }
 
-        // Create channel and invite user to it
-        interaction.guild.channels.create({
+        // Create private channel 
+        const channel = await interaction.guild.channels.create({ 
           name: channelName,
           type: Discord.ChannelType.GuildText,
+          permissionOverwrites: [
+            {
+              id: interaction.guild.id,
+              deny: [Discord.PermissionsBitField.Flags.ViewChannel],
+            },
+            {
+              id: interaction.user.id,
+              allow: [Discord.PermissionsBitField.Flags.ViewChannel],
+            },
+          ]
         });
 
         // Reply to user
         await interaction.reply({
-          content: "Created channel, please proceed to make a payment",
+          content: `Created channel, please proceed to make a payment (${channel.toString()})`,
           ephemeral: true,
         });
       }
