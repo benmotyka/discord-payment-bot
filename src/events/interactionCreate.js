@@ -5,6 +5,7 @@ const {
   ActionRowBuilder,
   ButtonStyle,
 } = require("discord.js");
+const { createTransaction } = require("../services/transaction");
 
 module.exports = {
   name: "interactionCreate", // Event name
@@ -13,7 +14,8 @@ module.exports = {
     if (interaction.isButton()) {
       if (interaction.customId === "payNow") {
         // Create unique channel name
-        const channelName = `${interaction.user.username}#${interaction.user.discriminator}`;
+        const channelName =
+          interaction.user.username + interaction.user.discriminator;
 
         // Check if channel already exists
         const existingChannel = interaction.guild.channels.cache.find(
@@ -41,6 +43,9 @@ module.exports = {
             },
           ],
         });
+
+        // Create transaction in db
+        await createTransaction(interaction.user.id)
 
         // Create styled message
         const embedMessage = new EmbedBuilder()

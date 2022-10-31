@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const { join } = require("path");
 const { config } = require("dotenv");
+const { connectDatabase } = require("./config/db");
 config();
 
 const client = new Discord.Client({
@@ -39,4 +40,10 @@ for (const file of eventFiles) {
   }
 }
 
-client.login(process.env.TOKEN);
+connectDatabase()
+  .then(() => {
+    client.login(process.env.TOKEN);
+  })
+  .catch((error) => {
+    console.error("Couldnt connect to db!", error);
+  });
