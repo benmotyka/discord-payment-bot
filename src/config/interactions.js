@@ -1,6 +1,4 @@
-module.exports = {
-  customIds: {
-    startTransaction: "startTransaction",
-    cancelTransaction: "cancelTransaction",
-  },
+export const customIds = {
+  startTransaction: "startTransaction",
+  cancelTransaction: "cancelTransaction",
 };

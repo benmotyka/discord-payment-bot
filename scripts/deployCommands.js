@@ -1,7 +1,8 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { REST } = require("@discordjs/rest");
-const { Routes } = require("discord-api-types/v9");
-const { config } = require("dotenv");
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import { config } from "dotenv";
+
 config();
 
 const clientId = "937772843876368424";

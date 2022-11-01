@@ -1,12 +1,12 @@
-const {
+import {
   EmbedBuilder,
   ButtonBuilder,
   ActionRowBuilder,
   ButtonStyle,
-} = require("discord.js");
-const { customIds } = require("../config/interactions")
+} from "discord.js";
+import { customIds } from "../config/interactions.js";
 
-module.exports = {
+export default {
   name: "initialize",
   description: "Initializes bot",
   cooldown: 1000 * 10,
@@ -16,7 +16,7 @@ module.exports = {
       .setColor(0x0099ff)
       .setTitle("Fast payment")
       .setDescription("To start a payment react with 💸")
-      .setFooter({text: "Maślak3000 - discord payment bot"})
+      .setFooter({ text: "Maślak3000 - discord payment bot" });
 
     // Create buttons under message
     const buttons = new ActionRowBuilder().addComponents(

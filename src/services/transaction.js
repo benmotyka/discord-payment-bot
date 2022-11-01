@@ -1,14 +1,12 @@
-const Transaction = require("../models/transaction");
+import Transaction from "../models/transaction.js";
 
-module.exports = {
-  async createTransaction(userId) {
-    const transaction = await Transaction.create({
-      userId,
-    });
-    transaction.save();
-    try {
-    } catch (error) {
-      console.log("Error in creating transaction", error);
-    }
-  },
+export const createTransaction = async (userId) => {
+  const transaction = await Transaction.create({
+    userId,
+  });
+  transaction.save();
+  try {
+  } catch (error) {
+    console.log("Error in creating transaction", error);
+  }
 };

@@ -1,8 +1,12 @@
-const Discord = require("discord.js");
-const fs = require("fs");
-const { join } = require("path");
-const { config } = require("dotenv");
-const { connectDatabase } = require("./config/db");
+import Discord from "discord.js";
+import fs from "fs";
+import { join } from "path";
+import { config } from "dotenv";
+import { connectDatabase } from "./config/db.js";
+
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
 config();
 
 const client = new Discord.Client({
@@ -16,6 +20,9 @@ const client = new Discord.Client({
 client.commands = new Discord.Collection();
 client.cooldowns = new Discord.Collection();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const commandsDir = join(__dirname, "./commands");
 const eventsDir = join(__dirname, "./events");
 
@@ -27,12 +34,12 @@ const eventFiles = fs
   .filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
+  const { default: command } = await import(`./commands/${file}`);
   client.commands.set(command.name, command);
 }
 
 for (const file of eventFiles) {
-  const event = require(`./events/${file}`);
+  const { default: event } = await import(`./events/${file}`);
   if (event.once) {
     client.once(event.name, (...args) => event.run(...args, client));
   } else {

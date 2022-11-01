@@ -1,14 +1,14 @@
-const Discord = require("discord.js");
-const {
+import Discord from "discord.js";
+import {
   EmbedBuilder,
   ButtonBuilder,
   ActionRowBuilder,
   ButtonStyle,
-} = require("discord.js");
-const { createTransaction } = require("../services/transaction");
-const { customIds } = require("../config/interactions");
+} from "discord.js";
+import { createTransaction } from "../services/transaction.js";
+import { customIds } from "../config/interactions.js";
 
-module.exports = {
+export default {
   name: "interactionCreate", // Event name
   once: false, // multiple commands can be run
   async run(interaction, client) {
