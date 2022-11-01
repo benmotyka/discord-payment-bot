@@ -4,6 +4,7 @@ const {
   ActionRowBuilder,
   ButtonStyle,
 } = require("discord.js");
+const { customIds } = require("../config/interactions")
 
 module.exports = {
   name: "initialize",
@@ -20,7 +21,7 @@ module.exports = {
     // Create buttons under message
     const buttons = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setCustomId("payNow")
+        .setCustomId(customIds.startTransaction)
         .setLabel("💸 Pay now")
         .setStyle(ButtonStyle.Secondary)
     );
