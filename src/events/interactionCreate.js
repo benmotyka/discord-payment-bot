@@ -5,7 +5,10 @@ import {
   ActionRowBuilder,
   ButtonStyle,
 } from "discord.js";
-import { createTransaction } from "../services/transaction.js";
+import {
+  createTransaction,
+  softDeleteTransaction,
+} from "../services/transaction.js";
 import { customIds } from "../config/interactions.js";
 
 export default {
@@ -29,7 +32,7 @@ export default {
           }
 
           // Create private channel
-          const channel = await interaction.guild.channels.create({
+          const createdChannel = await interaction.guild.channels.create({
             name: channelName,
             type: Discord.ChannelType.GuildText,
             permissionOverwrites: [
@@ -44,8 +47,13 @@ export default {
             ],
           });
 
-          // Create transaction in db
-          await createTransaction(interaction.user.id);
+          await createTransaction({
+            channelId: createdChannel.id,
+            guildId: interaction.guildId,
+            userId: interaction.user.id,
+            username: interaction.user.username,
+            discriminator: interaction.user.discriminator,
+          });
 
           // Create styled message
           const embedMessagePaymentInstructions = new EmbedBuilder()
@@ -73,7 +81,7 @@ export default {
                 .setStyle(ButtonStyle.Secondary)
             );
 
-          await channel.send({
+          await createdChannel.send({
             content: `Welcome ${interaction.user}`,
             embeds: [embedMessagePaymentInstructions],
             components: [buttons],
@@ -81,7 +89,7 @@ export default {
 
           // Reply to user
           await interaction.reply({
-            content: `Created channel, please proceed to make a payment (${channel.toString()})`,
+            content: `Created channel, please proceed to make a payment (${createdChannel.toString()})`,
             ephemeral: true,
           });
           break;
@@ -89,8 +97,13 @@ export default {
           const embedMessageCancelTransaction = new EmbedBuilder()
             .setColor(0x0099ff)
             .setDescription(
-              `Transaction canceled by: ${interaction.user}. Deleting channel.`
+              `Transaction canceled by: ${interaction.user}. Deleting channel in 10 seconds...`
             );
+
+          setTimeout(() => {
+            existingChannel.delete()
+            softDeleteTransaction({ channelId: interaction.channelId });
+          }, 10_000);
 
           await existingChannel.send({
             embeds: [embedMessageCancelTransaction],

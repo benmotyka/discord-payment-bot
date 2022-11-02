@@ -2,7 +2,23 @@ import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema(
   {
+    channelId: {
+      type: String,
+      require: true,
+    },
+    guildId: {
+      type: String,
+      require: true,
+    },
     userId: {
+      type: String,
+      required: true,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    discriminator: {
       type: String,
       required: true,
     },
