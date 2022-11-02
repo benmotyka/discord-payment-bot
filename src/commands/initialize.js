@@ -26,7 +26,7 @@ export default {
         .setStyle(ButtonStyle.Secondary)
     );
 
-    interaction.channel.send({
+    interaction.reply({
       embeds: [embedMessage],
       components: [buttons],
     });
