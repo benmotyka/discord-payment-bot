@@ -28,13 +28,22 @@ export const softDeleteTransaction = async ({ channelId }) => {
       channelId,
     });
 
-    if (!transaction) return
+    if (!transaction) return;
 
     await transaction.updateOne({
       deletedAt: new Date(),
     });
-
   } catch (error) {
     console.log("Error in soft deleting transaction", error);
+  }
+};
+
+export const getTransactionDetailsByChannelId = async ({ channelId }) => {
+  try {
+    return await Transaction.findOne({
+      channelId,
+    });
+  } catch (error) {
+    console.log("Error in getting transaction details by channel id", error);
   }
 };

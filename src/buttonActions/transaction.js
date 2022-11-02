@@ -7,6 +7,7 @@ import Discord, {
 import {
   createTransaction,
   softDeleteTransaction,
+  getTransactionDetailsByChannelId,
 } from "../services/transaction.js";
 import { customIds } from "../config/interactions.js";
 
@@ -52,9 +53,7 @@ export const startTransaction = async (interaction) => {
   const embedMessagePaymentInstructions = new EmbedBuilder()
     .setColor(0x0099ff)
     .setTitle("Payment instructions")
-    .setDescription(
-      "Please click ✅ button to initialize payment."
-    )
+    .setDescription("Please click ➡️ button to start payment.")
     .setFooter({
       text: "If you have any questions or concerns, feel free to mention moderators in this channel. You can cancel this payment anytime by pressing ❌",
     });
@@ -63,8 +62,8 @@ export const startTransaction = async (interaction) => {
   const buttons = new ActionRowBuilder()
     .addComponents(
       new ButtonBuilder()
-        .setCustomId("donePayment")
-        .setLabel("✅ Done")
+        .setCustomId(customIds.startPayment)
+        .setLabel("➡️ Start payment")
         .setStyle(ButtonStyle.Secondary)
     )
     .addComponents(
@@ -99,10 +98,21 @@ export const cancelTransaction = async (interaction) => {
     .setDescription(
       `Transaction canceled by: ${interaction.user}. Deleting channel in 10 seconds...`
     );
+  const existingTransaction = await getTransactionDetailsByChannelId({
+    channelId: interaction.channelId,
+  });
+  if (existingTransaction.deletedAt) {
+    return await interaction.reply({
+      content: "**Warning**: Transaction already canceled",
+      ephemeral: true,
+    });
+  }
+  await softDeleteTransaction({ channelId: interaction.channelId });
 
   setTimeout(() => {
-    existingChannel.delete();
-    softDeleteTransaction({ channelId: interaction.channelId });
+    existingChannel.delete().catch((error) => {
+      console.log("error in deleting channel", error);
+    });
   }, 10_000);
 
   await interaction.reply({
