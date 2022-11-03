@@ -10,6 +10,10 @@ import {
   getTransactionDetailsByChannelId,
 } from "../services/transaction.js";
 import { customIds } from "../config/interactions.js";
+import {
+  transactionInstructionsEmbed,
+  cancelTransactionEmbed,
+} from "../embeds/index.js";
 
 export const startTransaction = async (interaction) => {
   const channelName =
@@ -49,15 +53,6 @@ export const startTransaction = async (interaction) => {
     discriminator: interaction.user.discriminator,
   });
 
-  // Create styled message
-  const embedMessagePaymentInstructions = new EmbedBuilder()
-    .setColor(0x0099ff)
-    .setTitle("Payment instructions")
-    .setDescription("Please click ➡️ button to start payment.")
-    .setFooter({
-      text: "If you have any questions or concerns, feel free to mention moderators in this channel. You can cancel this payment anytime by pressing ❌",
-    });
-
   // Create buttons under message
   const buttons = new ActionRowBuilder()
     .addComponents(
@@ -75,7 +70,7 @@ export const startTransaction = async (interaction) => {
 
   await createdChannel.send({
     content: `Welcome ${interaction.user}`,
-    embeds: [embedMessagePaymentInstructions],
+    embeds: [transactionInstructionsEmbed],
     components: [buttons],
   });
 
@@ -93,11 +88,6 @@ export const cancelTransaction = async (interaction) => {
   const existingChannel = interaction.guild.channels.cache.find(
     (channel) => channel.name === channelName
   );
-  const embedMessageCancelTransaction = new EmbedBuilder()
-    .setColor(0x0099ff)
-    .setDescription(
-      `Transaction canceled by: ${interaction.user}. Deleting channel in 10 seconds...`
-    );
   const existingTransaction = await getTransactionDetailsByChannelId({
     channelId: interaction.channelId,
   });
@@ -116,6 +106,6 @@ export const cancelTransaction = async (interaction) => {
   }, 10_000);
 
   await interaction.reply({
-    embeds: [embedMessageCancelTransaction],
+    embeds: [cancelTransactionEmbed],
   });
 };

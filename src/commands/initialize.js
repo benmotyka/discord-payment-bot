@@ -5,19 +5,13 @@ import {
   ButtonStyle,
 } from "discord.js";
 import { customIds } from "../config/interactions.js";
+import { initializeEmbed } from "../embeds/index.js"
 
 export default {
   name: "initialize",
   description: "Initializes bot",
   cooldown: 1000 * 10,
   async run(interaction) {
-    // Create styled message
-    const embedMessage = new EmbedBuilder()
-      .setColor(0x0099ff)
-      .setTitle("Fast payment")
-      .setDescription("To start a payment react with 💸")
-      .setFooter({ text: "Maślak3000 - discord payment bot" });
-
     // Create buttons under message
     const buttons = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
@@ -27,7 +21,7 @@ export default {
     );
 
     interaction.reply({
-      embeds: [embedMessage],
+      embeds: [initializeEmbed],
       components: [buttons],
     });
   },
