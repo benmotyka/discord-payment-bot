@@ -8,6 +8,7 @@ import {
   createTransaction,
   softDeleteTransaction,
   getTransactionDetailsByChannelId,
+  confirmUserTransaction,
 } from "../services/transaction.js";
 import { customIds } from "../config/interactions.js";
 import {
@@ -57,8 +58,8 @@ export const startTransaction = async (interaction) => {
   const buttons = new ActionRowBuilder()
     .addComponents(
       new ButtonBuilder()
-        .setCustomId(customIds.startPayment)
-        .setLabel("➡️ Start payment")
+        .setCustomId(customIds.confirmTransaction)
+        .setLabel("➡️ Confirm payment")
         .setStyle(ButtonStyle.Secondary)
     )
     .addComponents(
@@ -107,5 +108,16 @@ export const cancelTransaction = async (interaction) => {
 
   await interaction.reply({
     embeds: [cancelTransactionEmbed],
+  });
+};
+
+export const confirmTransaction = async (interaction) => {
+  await confirmUserTransaction({
+    channelId: interaction.channelId,
+    userId: interaction.user.id,
+  });
+
+  await interaction.reply({
+    content: `Transaction confirmed by: ${interaction.user}`,
   });
 };

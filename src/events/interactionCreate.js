@@ -3,6 +3,7 @@ import { customIds } from "../config/interactions.js";
 import {
   startTransaction,
   cancelTransaction,
+  confirmTransaction,
 } from "../buttonActions/transaction.js";
 
 export default {
@@ -16,6 +17,9 @@ export default {
           break;
         case customIds.cancelTransaction:
           await cancelTransaction(interaction);
+          break;
+        case customIds.confirmTransaction:
+          await confirmTransaction(interaction);
           break;
       }
     } else if (interaction.isCommand()) {

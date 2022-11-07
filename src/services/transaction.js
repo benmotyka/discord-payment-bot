@@ -42,8 +42,26 @@ export const getTransactionDetailsByChannelId = async ({ channelId }) => {
   try {
     return await Transaction.findOne({
       channelId,
+      deletedAt: null,
     });
   } catch (error) {
     console.log("Error in getting transaction details by channel id", error);
+  }
+};
+
+export const confirmUserTransaction = async ({ channelId, userId }) => {
+  try {
+    return await Transaction.findOneAndUpdate(
+      {
+        channelId,
+        userId,
+        deletedAt: null,
+      },
+      {
+        confirmedByUser: true,
+      }
+    );
+  } catch (error) {
+    console.log("Error in soft deleting transaction", error);
   }
 };
