@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+import pg from "pg";
+import knex from "knex";
+
+import config from "../../knexfile.js";
 
 export const connectDatabase = async () => {
   await mongoose.connect(
@@ -6,3 +10,10 @@ export const connectDatabase = async () => {
     `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_URL}/?retryWrites=true&w=majority`
   );
 };
+
+
+pg.types.setTypeParser(1700, "text", parseFloat);
+
+const knexConfig = knex(config);
+
+export default knexConfig;
