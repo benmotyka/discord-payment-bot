@@ -28,7 +28,9 @@
     "knex": "^2.3.0",
     "mongoose": "^6.7.0",
     "nanoid": "^3.3.4",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.25.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
