@@ -7,24 +7,22 @@ export default {
   description: "Configures bot",
   cooldown: 1000 * 10,
   async run(interaction) {
-    //   TODO: add only for channel owner
+    if (interaction.guild.ownerId !== interaction.member.user.id) {
+      await interaction.reply({
+        content: "Command is available only for server owner",
+        ephemeral: true,
+      });
+    }
     // Create buttons under message
-    const buttons = new ActionRowBuilder()
-      .addComponents(
-        new ButtonBuilder()
-          .setCustomId(customIds.startConfiguration)
-          .setLabel("⚙️ Start configuring")
-          .setStyle(ButtonStyle.Secondary)
-      )
-      .addComponents(
-        new ButtonBuilder()
-          .setCustomId(customIds.cancelConfiguration)
-          .setLabel("❌ Cancel")
-          .setStyle(ButtonStyle.Secondary)
-      );
+    const buttons = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId(customIds.startConfiguration)
+        .setLabel("⚙️ Start configuring")
+        .setStyle(ButtonStyle.Secondary)
+    );
 
     await interaction.reply({
-      embeds: [getConfigurationEmbed({currentConfiguration: null})],
+      embeds: [getConfigurationEmbed({ currentConfiguration: null })],
       components: [buttons],
       ephemeral: true,
     });

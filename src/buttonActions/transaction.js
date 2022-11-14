@@ -121,3 +121,5 @@ export const confirmTransaction = async (interaction) => {
     content: `Transaction confirmed by: ${interaction.user}`,
   });
 };
+
+export const startConfiguration = async (interaction) => {};
