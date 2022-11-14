@@ -14,6 +14,9 @@ const commands = [
   new SlashCommandBuilder()
     .setName("initialize")
     .setDescription("Initializes bot"),
+  new SlashCommandBuilder()
+    .setName("configure")
+    .setDescription("Configures bot"),
 ].map((command) => command.toJSON());
 
 const rest = new REST({ version: "9" }).setToken(process.env.TOKEN);

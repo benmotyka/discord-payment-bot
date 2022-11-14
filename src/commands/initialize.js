@@ -1,17 +1,15 @@
-import {
-  EmbedBuilder,
-  ButtonBuilder,
-  ActionRowBuilder,
-  ButtonStyle,
-} from "discord.js";
+import { ButtonBuilder, ActionRowBuilder, ButtonStyle } from "discord.js";
 import { customIds } from "../config/interactions.js";
-import { initializeEmbed } from "../embeds/index.js"
+import { initializeEmbed } from "../embeds/index.js";
 
 export default {
   name: "initialize",
   description: "Initializes bot",
   cooldown: 1000 * 10,
   async run(interaction) {
+
+    // TODO: check if configration done
+
     // Create buttons under message
     const buttons = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
@@ -20,7 +18,7 @@ export default {
         .setStyle(ButtonStyle.Secondary)
     );
 
-    interaction.reply({
+    await interaction.reply({
       embeds: [initializeEmbed],
       components: [buttons],
     });

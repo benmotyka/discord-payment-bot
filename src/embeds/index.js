@@ -19,3 +19,12 @@ export const transactionInstructionsEmbed = new EmbedBuilder()
 export const cancelTransactionEmbed = new EmbedBuilder()
   .setColor(embedColors)
   .setDescription(`Transaction canceled. Deleting channel in 10 seconds...`);
+
+export const getConfigurationEmbed = ({ currentConfiguration }) =>
+  new EmbedBuilder()
+    .setColor(embedColors)
+    .setDescription(
+      currentConfiguration
+        ? `Your current configuration is: ${currentConfiguration}.\n\n Would you like to change it?`
+        : `You don't have any configuration yet. Press button below to start it`
+    );
