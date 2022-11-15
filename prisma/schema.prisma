@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id        String @id @default(uuid())
-  discordId String @unique
+  discordId String @unique @map("discord_id")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -22,28 +22,28 @@ model User {
 model Interaction {
   id String @id @default(uuid())
 
-  userId    String @map("user_id")
-  serverId  String @map("server_id")
-  channelId String @map("channel_id")
+  userId        String  @map("user_id")
+  serverId      String  @map("server_id")
+  channelId     String?  @map("channel_id")
+  transactionId String? @map("transaction_id")
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at")
 
-  transaction   Transaction?
-  channel       Channel?
-  user          User         @relation(fields: [userId], references: [id])
-  server        Server       @relation(fields: [serverId], references: [id])
-  transactionId String?
+  transaction Transaction?
+  channel     Channel?
+  user        User         @relation(fields: [userId], references: [id])
+  server      Server       @relation(fields: [serverId], references: [id])
 
   @@map("interaction")
 }
 
 model Server {
   id        String @id @default(uuid())
-  discordId String @unique
+  discordId String @unique @map("discord_id")
 
-  destinationWallet String
+  destinationWallet String @map("destination_wallet")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -55,9 +55,11 @@ model Server {
 
 model Channel {
   id            String @id @default(uuid())
+  discordId String @unique @map("discord_id")
+
   interactionId String @unique @map("interaction_id")
 
-  destinationWallet String
+  name String 
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -73,7 +75,7 @@ model Transaction {
 
   currency String
   amount   Float
-  isPaid   Boolean @default(false)
+  isPaid   Boolean @default(false) @map("is_paid")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)

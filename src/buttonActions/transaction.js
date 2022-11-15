@@ -4,12 +4,7 @@ import Discord, {
   ActionRowBuilder,
   ButtonStyle,
 } from "discord.js";
-import {
-  createTransaction,
-  softDeleteTransaction,
-  getTransactionDetailsByChannelId,
-  confirmUserTransaction,
-} from "../services/transaction.js";
+import { createInteraction } from "../services/transaction.js";
 import { customIds } from "../config/interactions.js";
 import {
   transactionInstructionsEmbed,
@@ -46,12 +41,11 @@ export const startTransaction = async (interaction) => {
     ],
   });
 
-  await createTransaction({
+  await createInteraction({
+    channelName,
     channelId: createdChannel.id,
-    guildId: interaction.guildId,
+    serverId: interaction.guildId,
     userId: interaction.user.id,
-    username: interaction.user.username,
-    discriminator: interaction.user.discriminator,
   });
 
   // Create buttons under message
@@ -89,16 +83,16 @@ export const cancelTransaction = async (interaction) => {
   const existingChannel = interaction.guild.channels.cache.find(
     (channel) => channel.name === channelName
   );
-  const existingTransaction = await getTransactionDetailsByChannelId({
-    channelId: interaction.channelId,
-  });
-  if (existingTransaction.deletedAt) {
-    return await interaction.reply({
-      content: "**Warning**: Transaction already canceled",
-      ephemeral: true,
-    });
-  }
-  await softDeleteTransaction({ channelId: interaction.channelId });
+  // const existingTransaction = await getTransactionDetailsByChannelId({
+  //   channelId: interaction.channelId,
+  // });
+  // if (existingTransaction.deletedAt) {
+  //   return await interaction.reply({
+  //     content: "**Warning**: Transaction already canceled",
+  //     ephemeral: true,
+  //   });
+  // }
+  // await softDeleteTransaction({ channelId: interaction.channelId });
 
   setTimeout(() => {
     existingChannel.delete().catch((error) => {
@@ -112,10 +106,10 @@ export const cancelTransaction = async (interaction) => {
 };
 
 export const confirmTransaction = async (interaction) => {
-  await confirmUserTransaction({
-    channelId: interaction.channelId,
-    userId: interaction.user.id,
-  });
+  // await confirmUserTransaction({
+  //   channelId: interaction.channelId,
+  //   userId: interaction.user.id,
+  // });
 
   await interaction.reply({
     content: `Transaction confirmed by: ${interaction.user}`,

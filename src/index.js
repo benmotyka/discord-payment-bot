@@ -2,7 +2,6 @@ import Discord from "discord.js";
 import fs from "fs";
 import { join } from "path";
 import { config } from "dotenv";
-import { connectDatabase } from "./config/db.js";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -47,10 +46,4 @@ for (const file of eventFiles) {
   }
 }
 
-connectDatabase()
-  .then(() => {
-    client.login(process.env.TOKEN);
-  })
-  .catch((error) => {
-    console.error("Couldnt connect to db!", error);
-  });
+client.login(process.env.TOKEN);

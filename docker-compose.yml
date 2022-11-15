@@ -1,16 +1,16 @@
 version: '3.8'
 services:
-  db:
-    image: postgres
+  postgres:
+    image: postgres:12
     restart: always
+    container_name: discord-bot-database
+    ports:
+      - "5555:5432"
     environment:
       - POSTGRES_USER=username
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=db
-    ports:
-      - '5432:5432'
-    volumes: 
-      - db:/var/lib/postgresql/data
+    volumes:
+      - database:/var/lib/postgresql/data
 volumes:
-  db:
-    driver: local
+  database:
