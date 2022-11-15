@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String @id @default(uuid())
+  discordId String @unique
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  interaction Interaction[]
+
+  @@map("users")
+}
+
+model Interaction {
+  id String @id @default(uuid())
+
+  userId    String @map("user_id")
+  serverId  String @map("server_id")
+  channelId String @map("channel_id")
+
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at")
+
+  transaction   Transaction?
+  channel       Channel?
+  user          User         @relation(fields: [userId], references: [id])
+  server        Server       @relation(fields: [serverId], references: [id])
+  transactionId String?
+
+  @@map("interaction")
+}
+
+model Server {
+  id        String @id @default(uuid())
+  discordId String @unique
+
+  destinationWallet String
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  interaction Interaction[]
+
+  @@map("server")
+}
+
+model Channel {
+  id            String @id @default(uuid())
+  interactionId String @unique @map("interaction_id")
+
+  destinationWallet String
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  interaction Interaction @relation(fields: [interactionId], references: [id])
+
+  @@map("channel")
+}
+
+model Transaction {
+  id            String @id @default(uuid())
+  interactionId String @unique @map("interaction_id")
+
+  currency String
+  amount   Float
+  isPaid   Boolean @default(false)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  interaction Interaction @relation(fields: [interactionId], references: [id])
+
+  @@map("transaction")
+}

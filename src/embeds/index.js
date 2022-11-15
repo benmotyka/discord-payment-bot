@@ -25,6 +25,6 @@ export const getConfigurationEmbed = ({ currentConfiguration }) =>
     .setColor(primaryColor)
     .setDescription(
       currentConfiguration
-        ? `Your current configuration is: ${currentConfiguration}.\n\nWould you like to change it?`
-        : `You don't have any configuration yet. Press ⚙️ below to start`
+        ? `Your current server configuration is: ${currentConfiguration}.\n\nWould you like to change it?`
+        : `Your server doesn't have any configuration yet. Press ⚙️ below to start`
     );
