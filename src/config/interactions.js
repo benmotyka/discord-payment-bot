@@ -1,6 +1,6 @@
 export const customIds = {
   startTransaction: "startTransaction",
   startConfiguration: "startConfiguration",
-  cancelTransaction: "cancelTransaction",
+  cancelInteraction: "cancelInteraction",
   confirmTransaction: "confirmTransaction",
 };

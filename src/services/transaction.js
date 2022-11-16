@@ -111,3 +111,32 @@ export const createInteraction = async ({
     },
   });
 };
+
+export const softDeleteInteraction = async (channelId) => {
+  const interaction = await prisma.interaction.findFirst({
+    where: {
+      channel: {
+        discordId: channelId,
+      },
+    },
+  });
+
+  return await prisma.interaction.update({
+    where: {
+      id: interaction.id,
+    },
+    data: {
+      deletedAt: new Date(),
+    },
+  });
+};
+
+export const getInteractionDetails = async (channelId) => {
+  return await prisma.interaction.findFirst({
+    where: {
+      channel: {
+        discordId: channelId,
+      },
+    },
+  });
+};

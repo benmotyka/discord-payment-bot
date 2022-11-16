@@ -16,7 +16,7 @@ export const transactionInstructionsEmbed = new EmbedBuilder()
     text: "If you have any questions or concerns, feel free to mention moderators in this channel. You can cancel this payment anytime by pressing ❌",
   });
 
-export const cancelTransactionEmbed = new EmbedBuilder()
+export const cancelInteractionEmbed = new EmbedBuilder()
   .setColor(primaryColor)
   .setDescription(`Transaction canceled. Deleting channel in 10 seconds...`);
 

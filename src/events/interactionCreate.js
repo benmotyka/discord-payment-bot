@@ -2,7 +2,7 @@ import Discord from "discord.js";
 import { customIds } from "../config/interactions.js";
 import {
   startTransaction,
-  cancelTransaction,
+  cancelInteraction,
   confirmTransaction,
 } from "../buttonActions/transaction.js";
 
@@ -15,8 +15,8 @@ export default {
         case customIds.startTransaction:
           await startTransaction(interaction);
           break;
-        case customIds.cancelTransaction:
-          await cancelTransaction(interaction);
+        case customIds.cancelInteraction:
+          await cancelInteraction(interaction);
           break;
         case customIds.confirmTransaction:
           await confirmTransaction(interaction);

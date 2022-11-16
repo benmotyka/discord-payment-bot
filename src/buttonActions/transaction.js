@@ -4,11 +4,15 @@ import Discord, {
   ActionRowBuilder,
   ButtonStyle,
 } from "discord.js";
-import { createInteraction } from "../services/transaction.js";
+import {
+  createInteraction,
+  getInteractionDetails,
+  softDeleteInteraction,
+} from "../services/transaction.js";
 import { customIds } from "../config/interactions.js";
 import {
   transactionInstructionsEmbed,
-  cancelTransactionEmbed,
+  cancelInteractionEmbed,
 } from "../embeds/index.js";
 
 export const startTransaction = async (interaction) => {
@@ -58,7 +62,7 @@ export const startTransaction = async (interaction) => {
     )
     .addComponents(
       new ButtonBuilder()
-        .setCustomId(customIds.cancelTransaction)
+        .setCustomId(customIds.cancelInteraction)
         .setLabel("❌ Cancel")
         .setStyle(ButtonStyle.Secondary)
     );
@@ -76,23 +80,23 @@ export const startTransaction = async (interaction) => {
   });
 };
 
-export const cancelTransaction = async (interaction) => {
+export const cancelInteraction = async (interaction) => {
   const channelName =
     interaction.user.username + interaction.user.discriminator;
   // Check if channel already exists
   const existingChannel = interaction.guild.channels.cache.find(
     (channel) => channel.name === channelName
   );
-  // const existingTransaction = await getTransactionDetailsByChannelId({
-  //   channelId: interaction.channelId,
-  // });
-  // if (existingTransaction.deletedAt) {
-  //   return await interaction.reply({
-  //     content: "**Warning**: Transaction already canceled",
-  //     ephemeral: true,
-  //   });
-  // }
-  // await softDeleteTransaction({ channelId: interaction.channelId });
+  const existingInteraction = await getInteractionDetails(
+    interaction.channelId
+  );
+  if (existingInteraction.deletedAt) {
+    return await interaction.reply({
+      content: "**Warning**: Interaction already canceled",
+      ephemeral: true,
+    });
+  }
+  await softDeleteInteraction(interaction.channelId);
 
   setTimeout(() => {
     existingChannel.delete().catch((error) => {
@@ -101,7 +105,7 @@ export const cancelTransaction = async (interaction) => {
   }, 10_000);
 
   await interaction.reply({
-    embeds: [cancelTransactionEmbed],
+    embeds: [cancelInteractionEmbed],
   });
 };
 
