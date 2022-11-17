@@ -5,6 +5,7 @@ import {
   cancelInteraction,
   confirmTransaction,
 } from "../buttonActions/transaction.js";
+import { startConfiguration } from "../buttonActions/server.js";
 
 export default {
   name: "interactionCreate", // Event name
@@ -20,6 +21,9 @@ export default {
           break;
         case customIds.confirmTransaction:
           await confirmTransaction(interaction);
+          break;
+        case customIds.startConfiguration:
+          await startConfiguration(interaction);
           break;
       }
     } else if (interaction.isCommand()) {

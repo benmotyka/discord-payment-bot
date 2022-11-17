@@ -88,7 +88,7 @@ model Transaction {
 model ServerConfigurtion {
   id String @id @default(uuid())
 
-  serverId String @unique @map("server_id")
+  serverId String @map("server_id")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)

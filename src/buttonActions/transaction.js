@@ -119,4 +119,3 @@ export const confirmTransaction = async (interaction) => {
   });
 };
 
-export const startConfiguration = async (interaction) => {};

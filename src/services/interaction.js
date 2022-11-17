@@ -11,13 +11,8 @@ export const createInteraction = async ({
   return await prisma.interaction.create({
     data: {
       user: {
-        connectOrCreate: {
-          create: {
-            discordId: userId,
-          },
-          where: {
-            discordId: userId,
-          },
+        connect: {
+          discordId: userId,
         },
       },
       server: {
