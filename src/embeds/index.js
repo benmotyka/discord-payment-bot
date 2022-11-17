@@ -8,7 +8,7 @@ export const initializeEmbed = new EmbedBuilder()
   .setDescription("To start a payment react with 💸")
   .setFooter({ text: "Maślak3000 - discord payment bot" });
 
-export const transactionInstructionsEmbed = new EmbedBuilder()
+export const interactionInstructionsEmbed = new EmbedBuilder()
   .setColor(primaryColor)
   .setTitle("Payment instructions")
   .setDescription("Please click ➡️ button to start payment")

@@ -2,23 +2,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// export const confirmUserTransaction = async ({ channelId, userId }) => {
-//   try {
-//     return await Transaction.findOneAndUpdate(
-//       {
-//         channelId,
-//         userId,
-//         deletedAt: null,
-//       },
-//       {
-//         confirmedByUser: true,
-//       }
-//     );
-//   } catch (error) {
-//     console.log("Error in soft deleting transaction", error);
-//   }
-// };
-
 export const createInteraction = async ({
   userId,
   serverId,

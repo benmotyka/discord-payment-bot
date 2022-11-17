@@ -1,5 +1,4 @@
 import Discord, {
-  EmbedBuilder,
   ButtonBuilder,
   ActionRowBuilder,
   ButtonStyle,
@@ -8,10 +7,10 @@ import {
   createInteraction,
   getInteractionDetails,
   softDeleteInteraction,
-} from "../services/transaction.js";
+} from "../services/interaction.js";
 import { customIds } from "../config/interactions.js";
 import {
-  transactionInstructionsEmbed,
+  interactionInstructionsEmbed,
   cancelInteractionEmbed,
 } from "../embeds/index.js";
 
@@ -69,7 +68,7 @@ export const startTransaction = async (interaction) => {
 
   await createdChannel.send({
     content: `Welcome ${interaction.user}`,
-    embeds: [transactionInstructionsEmbed],
+    embeds: [interactionInstructionsEmbed],
     components: [buttons],
   });
 

@@ -22,16 +22,16 @@ model User {
 model Interaction {
   id String @id @default(uuid())
 
-  userId        String @map("user_id")
-  serverId      String @map("server_id")
-  channelId     String @unique @map("channel_id")
+  userId        String  @map("user_id")
+  serverId      String  @map("server_id")
+  channelId     String  @unique @map("channel_id")
   transactionId String? @unique @map("transaction_id")
 
   createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at")
 
-  channel     Channel     @relation(fields: [channelId], references: [id])
+  channel     Channel      @relation(fields: [channelId], references: [id])
   transaction Transaction? @relation(fields: [transactionId], references: [id])
 
   user   User   @relation(fields: [userId], references: [id])
@@ -44,12 +44,14 @@ model Server {
   id        String @id @default(uuid())
   discordId String @unique @map("discord_id")
 
-  destinationWallet String @map("destination_wallet")
+  destinationWallet          String  @map("destination_wallet")
+  latestServerConfigurtionId String? @map("server_configuration_id")
 
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  interaction Interaction[]
+  interaction        Interaction[]
+  serverConfigurtion ServerConfigurtion? @relation(fields: [latestServerConfigurtionId], references: [id])
 
   @@map("server")
 }
@@ -81,4 +83,17 @@ model Transaction {
   interaction Interaction?
 
   @@map("transaction")
+}
+
+model ServerConfigurtion {
+  id String @id @default(uuid())
+
+  serverId String @unique @map("server_id")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  server Server[]
+
+  @@map("server_configuration")
 }
