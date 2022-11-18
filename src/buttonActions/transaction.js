@@ -97,6 +97,11 @@ export const cancelInteraction = async (interaction) => {
   }
   await softDeleteInteraction(interaction.channelId);
 
+  // remove buttons from interaction message
+  await interaction.message.edit({
+    components: []
+  })
+
   setTimeout(() => {
     existingChannel.delete().catch((error) => {
       console.log("error in deleting channel", error);

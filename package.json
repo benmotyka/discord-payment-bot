@@ -26,12 +26,8 @@
     "discord-api-types": "^0.37.14",
     "discord.js": "^14.6.0",
     "dotenv": "^16.0.3",
-    "knex": "^2.3.0",
-    "mongoose": "^6.7.0",
-    "nanoid": "^3.3.4",
     "pg": "^8.8.0",
-    "pg-hstore": "^2.3.4",
-    "sequelize": "^6.25.5"
+    "pg-hstore": "^2.3.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.20",
