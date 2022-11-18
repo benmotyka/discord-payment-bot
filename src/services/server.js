@@ -42,7 +42,7 @@ export const getServerConfiguration = async ({ serverId }) => {
 
   return await prisma.serverConfigurtion.findFirst({
     where: {
-      id: server.latestServerConfigurtionId,
+      id: server?.latestServerConfigurtionId,
     },
   });
 };
