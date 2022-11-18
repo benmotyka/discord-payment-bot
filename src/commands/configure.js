@@ -1,6 +1,7 @@
 import { ButtonBuilder, ActionRowBuilder, ButtonStyle } from "discord.js";
 import { customIds } from "../config/interactions.js";
 import { getConfigurationEmbed } from "../embeds/index.js";
+import { getServerConfiguration } from "../services/server.js";
 
 export default {
   name: "configure",
@@ -15,6 +16,10 @@ export default {
       });
     }
 
+    const currentConfiguration = await getServerConfiguration({
+      serverId: interaction.guildId,
+    });
+
     // Create buttons under response
     const buttons = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
@@ -24,7 +29,11 @@ export default {
     );
 
     await interaction.reply({
-      embeds: [getConfigurationEmbed({ currentConfiguration: null })],
+      embeds: [
+        getConfigurationEmbed({
+          currentConfiguration,
+        }),
+      ],
       components: [buttons],
       ephemeral: true,
     });

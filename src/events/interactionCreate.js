@@ -52,11 +52,13 @@ export default {
         if (Date.now() < expirationTime) {
           // If not, how long is left?
           const timeLeft = (expirationTime - Date.now()) / 1000;
-          return interaction.reply(
-            "Whoops, you are on cooldown for this command for another " +
+          return interaction.reply({
+            content:
+              "Whoops, you are on cooldown for this command for another " +
               timeLeft +
-              " seconds."
-          ); // Return an error message
+              " seconds.",
+            ephemeral: true,
+          }); 
         }
       }
       // Put the user on cooldown

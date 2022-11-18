@@ -21,7 +21,7 @@ export default {
     );
 
     if (!serverConfiguration) {
-      await interaction.reply({
+      return await interaction.reply({
         content: `Server not configured, please use \`/configure\` command first`,
         ephemeral: true,
       });
@@ -34,7 +34,7 @@ export default {
         .setStyle(ButtonStyle.Secondary)
     );
 
-    await interaction.reply({
+    return await interaction.reply({
       embeds: [initializeEmbed],
       components: [buttons],
     });
