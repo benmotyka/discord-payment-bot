@@ -80,11 +80,9 @@ export const startTransaction = async (interaction) => {
 };
 
 export const cancelInteraction = async (interaction) => {
-  const channelName =
-    interaction.user.username + interaction.user.discriminator;
   // Check if channel already exists
   const existingChannel = interaction.guild.channels.cache.find(
-    (channel) => channel.name === channelName
+    (channel) => channel.id === interaction.channelId
   );
   const existingInteraction = await getInteractionDetails(
     interaction.channelId
@@ -99,8 +97,13 @@ export const cancelInteraction = async (interaction) => {
 
   // remove buttons from interaction message
   await interaction.message.edit({
-    components: []
-  })
+    components: [],
+  });
+
+  // save all messages
+  const messages = await existingChannel.messages.fetch({ limit: 100 });
+
+  console.log(messages);
 
   setTimeout(() => {
     existingChannel.delete().catch((error) => {
@@ -123,4 +126,3 @@ export const confirmTransaction = async (interaction) => {
     content: `Transaction confirmed by: ${interaction.user}`,
   });
 };
-

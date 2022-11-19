@@ -40,7 +40,7 @@
 
 ## About The Project
 
-Discord Payment Bot allows you to pay for goods and services of your choice directly from discord server.
+Discord Payment Bot allows you to pay for goods and services of your choice directly from discord server. Before running a bot, discord server owner needs to configure it first.
 
 ...in development
 
@@ -48,6 +48,8 @@ Discord Payment Bot allows you to pay for goods and services of your choice dire
 
 - [Node.js](https://nodejs.org/)
 - [Discord.js (14)](https://discord.js.org/#/)
+- [Prisma](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
 
 <!-- GETTING STARTED -->
 
@@ -71,7 +73,7 @@ Discord Payment Bot allows you to pay for goods and services of your choice dire
 3. Create `.env` file and enter:
    ```
    TOKEN=<discord_token>
-
+   DATABASE_URL=<database_url>
    ```
 5. Run app
    ```sh
