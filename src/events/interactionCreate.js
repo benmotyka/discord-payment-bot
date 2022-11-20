@@ -5,7 +5,10 @@ import {
   cancelInteraction,
   confirmTransaction,
 } from "../buttonActions/transaction.js";
-import { startConfiguration } from "../buttonActions/server.js";
+import {
+  cancelConfiguration,
+  startConfiguration,
+} from "../buttonActions/server.js";
 
 export default {
   name: "interactionCreate", // Event name
@@ -24,6 +27,9 @@ export default {
           break;
         case customIds.startConfiguration:
           await startConfiguration(interaction);
+          break;
+        case customIds.cancelConfiguration:
+          await cancelConfiguration(interaction);
           break;
       }
     } else if (interaction.isCommand()) {
@@ -58,7 +64,7 @@ export default {
               timeLeft +
               " seconds.",
             ephemeral: true,
-          }); 
+          });
         }
       }
       // Put the user on cooldown
