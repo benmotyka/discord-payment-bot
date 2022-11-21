@@ -87,7 +87,7 @@ export const cancelInteraction = async (interaction) => {
   const existingInteraction = await getInteractionDetails(
     interaction.channelId
   );
-  if (existingInteraction.deletedAt) {
+  if (existingInteraction?.deletedAt) {
     return await interaction.reply({
       content: "**Warning**: Interaction already canceled",
       ephemeral: true,
@@ -101,9 +101,30 @@ export const cancelInteraction = async (interaction) => {
   });
 
   // save all messages
-  const messages = await existingChannel.messages.fetch({ limit: 100 });
+  const messages = await existingChannel.messages.fetch({ limit: 500 });
 
-  console.log(messages);
+  const channelHistory = {
+    channel: {
+      id: interaction.channelId,
+      name: existingChannel.name,
+    },
+    guild: {
+      id: interaction.guildId,
+      name: existingChannel.guild.name,
+    },
+    messagesData: messages
+    .map((message) => ({
+      createdAt: message.createdTimestamp,
+      content: message.content,
+      user: {
+        id: message.author.id,
+        name: message.author.username + message.author.discriminator,
+      },
+    }))
+    .sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt));,
+  };
+
+  console.log(JSON.stringify(channelHistory));
 
   setTimeout(() => {
     existingChannel.delete().catch((error) => {
