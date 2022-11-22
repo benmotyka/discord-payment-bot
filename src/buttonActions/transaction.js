@@ -4,6 +4,7 @@ import Discord, {
   ButtonStyle,
 } from "discord.js";
 import {
+  addTranscript,
   createInteraction,
   getInteractionDetails,
   softDeleteInteraction,
@@ -13,6 +14,8 @@ import {
   interactionInstructionsEmbed,
   cancelInteractionEmbed,
 } from "../embeds/index.js";
+
+const TIME_BEFORE_DELETING_MESSAGES_MS = 10_000
 
 export const startTransaction = async (interaction) => {
   const channelName =
@@ -100,8 +103,8 @@ export const cancelInteraction = async (interaction) => {
     components: [],
   });
 
-  // save all messages
-  const messages = await existingChannel.messages.fetch({ limit: 500 });
+  // save all messages, limit cannot be greater than 100
+  const messages = await existingChannel.messages.fetch({ limit: 100 });
 
   const channelHistory = {
     channel: {
@@ -113,24 +116,25 @@ export const cancelInteraction = async (interaction) => {
       name: existingChannel.guild.name,
     },
     messagesData: messages
-    .map((message) => ({
-      createdAt: message.createdTimestamp,
-      content: message.content,
-      user: {
-        id: message.author.id,
-        name: message.author.username + message.author.discriminator,
-      },
-    }))
-    .sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt));,
+      .map((message) => ({
+        createdAt: message.createdTimestamp,
+        content: message.content,
+        user: {
+          id: message.author.id,
+          name: message.author.username + message.author.discriminator,
+        },
+      }))
+      .sort((a, b) => new Date(a.createdAt) < new Date(b.createdAt)),
   };
 
-  console.log(JSON.stringify(channelHistory));
-
-  setTimeout(() => {
-    existingChannel.delete().catch((error) => {
+  setTimeout(async () => {
+    try {
+      await addTranscript(interaction.channelId, JSON.stringify(channelHistory))
+      await existingChannel.delete()
+    } catch (error) {
       console.log("error in deleting channel", error);
-    });
-  }, 10_000);
+    }
+  }, TIME_BEFORE_DELETING_MESSAGES_MS);
 
   await interaction.reply({
     embeds: [cancelInteractionEmbed],

@@ -56,6 +56,11 @@ export const softDeleteInteraction = async (channelId) => {
     },
     data: {
       deletedAt: new Date(),
+      channel: {
+        update: {
+          deletedAt: new Date(),
+        },
+      },
     },
   });
 };
@@ -66,6 +71,30 @@ export const getInteractionDetails = async (channelId) => {
       channel: {
         discordId: channelId,
       },
+    },
+  });
+};
+
+export const addTranscript = async (channelId, chatTranscript) => {
+  const deletedInteraction = await prisma.interaction.findFirst({
+    where: {
+      deletedAt: {
+        not: null,
+      },
+      channel: {
+        discordId: channelId,
+      },
+    },
+  });
+
+  if (!deletedInteraction) throw new Error("interaction-not-deleted");
+
+  return await prisma.interaction.update({
+    where: {
+      id: deletedInteraction.id,
+    },
+    data: {
+      chatTranscript,
     },
   });
 };

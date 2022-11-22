@@ -28,7 +28,7 @@ export const serverConfigurationInstructionsEmbed = new EmbedBuilder()
 
 export const cancelInteractionEmbed = new EmbedBuilder()
   .setColor(primaryColor)
-  .setDescription(`Transaction canceled. Deleting channel in 10 seconds...`);
+  .setDescription(`Transaction canceled. Deleting channel...`);
 
 export const getConfigurationEmbed = ({ currentConfiguration }) =>
   new EmbedBuilder()
