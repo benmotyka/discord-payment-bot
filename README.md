@@ -62,15 +62,20 @@ Discord Payment Bot allows you to pay for goods and services of your choice dire
 
 ### Installation
 
-1. Clone this repo
+1. Clone and enter this repo 
    ```sh
    git clone https://github.com/benmotyka/discord-payment-bot.git
+   cd discord-payment-bot
    ```
 2. Install NPM packages
    ```sh
    npm install
    ```
-3. Create `.env` file and enter:
+3. (optional) Start local database:
+   ```
+   docker-compose up
+   ```
+4. Create `.env` file and enter:
    ```
    TOKEN=<discord_token>
    DATABASE_URL=<database_url>
